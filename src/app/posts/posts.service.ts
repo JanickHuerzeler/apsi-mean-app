@@ -15,19 +15,19 @@ export class PostsService {
 
   getPosts() {
     this.http.get<{ message: string, posts: any[] }>('http://localhost:3000/api/posts')
-    .pipe(map((postData) => {
-      return postData.posts.map(post => {
-        return {
-          title: post.title,
-          content: post.content,
-          id: post._id
-        };
+      .pipe(map((postData) => {
+        return postData.posts.map(post => {
+          return {
+            title: post.title,
+            content: post.content,
+            id: post._id
+          };
+        });
+      }))
+      .subscribe((transformedPosts) => {
+        this.posts = transformedPosts;
+        this.postUpdated.next([...this.posts]);
       });
-    }))
-    .subscribe((transformedPosts) => {
-      this.posts = transformedPosts;
-      this.postUpdated.next([...this.posts]);
-    });
   }
 
   getPostUpdateListener() {
@@ -42,6 +42,15 @@ export class PostsService {
         this.posts.push(post);
         this.postUpdated.next([...this.posts]);
       });
+  }
+
+  deletePost(postId: string) {
+    this.http.delete("http://localhost:3000/api/posts/" + postId).subscribe(() => {
+      console.log("Deleted");
+      const updatedPosts = this.posts.filter(post => post.id!==postId);
+      this.posts = updatedPosts;
+      this.postUpdated.next([...this.posts]);
+    });
   }
 }
 
