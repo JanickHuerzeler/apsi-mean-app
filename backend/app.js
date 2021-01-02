@@ -25,25 +25,12 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/posts', (req, res, next) => {
-  const posts = [
-    {
-      id: 'snkfkjkf',
-      title: 'First server-side post',
-      content: 'This is comming from the server'
-    },
-    {
-      id: 'gyrrshjhk',
-      title: 'Second server-side post',
-      content: 'This is commiing from the server'
-    },
-    {
-      id: 'mhsetghj',
-      title: 'Third server-side post',
-      content: 'This is comming from the server'
-    }];
-  res.status(200).json({
-    message: 'Posts Fetched Successfully',
-    posts: posts
+  postmodel.find().then(documents => {
+    console.log(documents);
+    res.status(200).json({
+      message: 'Posts Fetched Successfully',
+      posts: documents //.map()
+    });
   });
 });
 
