@@ -4,7 +4,7 @@ const app = express();
 const postmodel = require('./models/post');
 
 const mongoose = require('mongoose');
-mongoose.connect("mongodb+srv://apsi-tutorial-user:jhNxlVW8VjPurTpD@cluster0.9qznl.mongodb.net/posts?retryWrites=true&w=majority").then(() => {
+mongoose.connect("mongodb+srv://apsi-tutorial-user:jhNxlVW8VjPurTpD@cluster0.9qznl.mongodb.net/node-angular-database?retryWrites=true&w=majority", { useNewUrlParser: true }).then(() => {
   console.log("Connected to database");
 })
   .catch(() => {
@@ -49,6 +49,7 @@ app.get('/api/posts', (req, res, next) => {
 
 app.post("/api/posts", (req, res, next) => {
   const post = new postmodel({ title: req.body.title, content: req.body.content });
+  post.save();
   console.log(post);
   res.status(201).json({
     message: 'Post added successfully'
