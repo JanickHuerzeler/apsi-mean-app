@@ -36,10 +36,11 @@ app.get('/api/posts', (req, res, next) => {
 
 app.post("/api/posts", (req, res, next) => {
   const post = new postmodel({ title: req.body.title, content: req.body.content });
-  post.save();
-  console.log(post);
-  res.status(201).json({
-    message: 'Post added successfully'
+  post.save().then(result => {
+    res.status(201).json({
+      message: 'Post added successfully',
+      postId: result._id
+    });
   });
 });
 
