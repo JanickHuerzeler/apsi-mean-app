@@ -1,5 +1,8 @@
 const express = require('express');
+const bodyparser = require("body-parser");
 const app = express();
+
+app.use(bodyparser.json());
 
 app.use((req, res, next)=>{
   // Could use more restricted header values
@@ -33,6 +36,14 @@ app.use('/api/posts', (req, res, next) => {
       message: 'Posts Fetched Successfully',
       posts: posts
     });
+});
+
+app.post("/api/posts",(req, res, next)=>{
+  const post = req.body;
+  console.log(post);
+  res.status(201).json({
+    message: 'Post added successfully'
+  });
 });
 
 module.exports = app;
